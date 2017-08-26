@@ -80,7 +80,7 @@ public class AddressBook {
     private static final String MESSAGE_ERROR_READING_FROM_FILE = "Unexpected error: unable to read from file: %1$s";
     private static final String MESSAGE_ERROR_WRITING_TO_FILE = "Unexpected error: unable to write to file: %1$s";
     private static final String MESSAGE_PERSONS_FOUND_OVERVIEW = "%1$d persons found!";
-    private static final String MESSAGE_PERSONS_FOUND_OVERVIEW_ZERO = "%1$d persons found!  Did you type the wrong name?";
+    private static final String ZERO_PERSONS_FOUND_SUGGESTION = "Did you type the wrong name?";
     private static final String MESSAGE_STORAGE_FILE_CREATED = "Created new empty storage file: %1$s";
     private static final String MESSAGE_WELCOME = "Welcome to your Address Book!";
     private static final String MESSAGE_USING_DEFAULT_FILE = "Using default storage file : " + DEFAULT_STORAGE_FILEPATH;
@@ -463,9 +463,18 @@ public class AddressBook {
     private static String getMessageForPersonsDisplayedSummary(ArrayList<HashMap<String, String>> personsDisplayed) {
         if (personsDisplayed.size() == 0)
         {
-            return String.format(MESSAGE_PERSONS_FOUND_OVERVIEW_ZERO, 0);
+            return getMessageForZeroPersonsDisplayedSummary();
         }
         return String.format(MESSAGE_PERSONS_FOUND_OVERVIEW, personsDisplayed.size());
+    }
+
+    /**
+     * Constructs a feedback message to summarise an operation that displayed a listing of persons.
+     *
+     * @return summary message for persons displayed with a suggestion message
+     */
+    private static String getMessageForZeroPersonsDisplayedSummary() {
+        return String.format(MESSAGE_PERSONS_FOUND_OVERVIEW, ZERO_PERSONS_FOUND_SUGGESTION, 0);
     }
 
     /**
