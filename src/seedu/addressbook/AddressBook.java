@@ -84,6 +84,7 @@ public class AddressBook {
     private static final String MESSAGE_STORAGE_FILE_CREATED = "Created new empty storage file: %1$s";
     private static final String MESSAGE_WELCOME = "Welcome to your Address Book!";
     private static final String MESSAGE_USING_DEFAULT_FILE = "Using default storage file : " + DEFAULT_STORAGE_FILEPATH;
+    private static final String MESSAGE_ADDRESSBOOK_SORTED = "Address book has been sorted by ";
 
     // These are the prefix strings to define the data type of a command parameter
     private static final String PERSON_DATA_PREFIX_PHONE = "p/";
@@ -126,6 +127,13 @@ public class AddressBook {
     private static final String COMMAND_EXIT_WORD = "exit";
     private static final String COMMAND_EXIT_DESC = "Exits the program.";
     private static final String COMMAND_EXIT_EXAMPLE = COMMAND_EXIT_WORD;
+
+    private static final String COMMAND_SORT_WORD = "sort";
+    private static final String COMMAND_SORT_DESC = "Sorts the list of people based on the parameter that was input.";
+    private static final String COMMAND_SORT_EXAMPLE = COMMAND_SORT_WORD + " name";
+    private static final String COMMAND_SORT_PARAMETER_NAME = "name";
+    private static final String COMMAND_SORT_PARAMETER_PHONE = "phone";
+    private static final String COMMAND_SORT_PARAMETER_EMAIL = "email";
 
     private static final String DIVIDER = "===================================================";
 
@@ -179,7 +187,7 @@ public class AddressBook {
     /**
      * List of all persons in the address book.
      */
-    private static final ArrayList<HashMap<String, String>> ALL_PERSONS = new ArrayList<>();
+    private static final ArrayList<HashMap<String, String>> ALL_PERSONS = new ArrayList<HashMap<String, String>>();
 
     /**
      * Stores the most recent list of persons shown to the user as a result of a user command.
@@ -379,6 +387,8 @@ public class AddressBook {
                 return executeClearAddressBook();
             case COMMAND_HELP_WORD:
                 return getUsageInfoForAllCommands();
+            case COMMAND_SORT_WORD:
+                return executeSortPerson(commandArgs);
             case COMMAND_EXIT_WORD:
                 executeExitProgramRequest();
             default:
@@ -463,7 +473,7 @@ public class AddressBook {
     private static String getMessageForPersonsDisplayedSummary(ArrayList<HashMap<String, String>> personsDisplayed) {
         if (personsDisplayed.size() == 0)
         {
-            return getMessageForZeroPersonsDisplayedSummary();
+            return getMessageForZeroPersonsDisplayedSummary(personsDisplayed);
         }
         return String.format(MESSAGE_PERSONS_FOUND_OVERVIEW, personsDisplayed.size());
     }
@@ -473,8 +483,8 @@ public class AddressBook {
      *
      * @return summary message for persons displayed with a suggestion message
      */
-    private static String getMessageForZeroPersonsDisplayedSummary() {
-        return String.format(MESSAGE_PERSONS_FOUND_OVERVIEW, ZERO_PERSONS_FOUND_SUGGESTION, 0);
+    private static String getMessageForZeroPersonsDisplayedSummary(ArrayList<HashMap<String, String>> personsDisplayed) {
+        return String.format(MESSAGE_PERSONS_FOUND_OVERVIEW, personsDisplayed.size(), ZERO_PERSONS_FOUND_SUGGESTION);
     }
 
     /**
@@ -588,6 +598,161 @@ public class AddressBook {
         ArrayList<HashMap<String, String>> toBeDisplayed = getAllPersonsInAddressBook();
         showToUser(toBeDisplayed);
         return getMessageForPersonsDisplayedSummary(toBeDisplayed);
+    }
+
+    /**
+     * Checks if commandArgs is valid, then calls quickSort to sort the ArrayList of people
+     *
+     * @param commandArgs The parameter we want to sort the people in the ArrayList with
+     * @return An error message if commandArgs is invalid, and a success message from quickSort if it is
+     */
+    private static String executeSortPerson(String commandArgs){
+        switch (commandArgs) {
+            case COMMAND_SORT_PARAMETER_NAME:
+                quickSortByName(ALL_PERSONS, 0, ALL_PERSONS.size() - 1);
+                return String.format(MESSAGE_ADDRESSBOOK_SORTED, commandArgs);
+            case COMMAND_SORT_PARAMETER_PHONE:
+                quickSortByPhone(ALL_PERSONS, 0, ALL_PERSONS.size() - 1);
+                return String.format(MESSAGE_ADDRESSBOOK_SORTED, commandArgs);
+            case COMMAND_SORT_PARAMETER_EMAIL:
+                quickSortByEmail(ALL_PERSONS, 0, ALL_PERSONS.size() - 1);
+                return String.format(MESSAGE_ADDRESSBOOK_SORTED, commandArgs);
+            default:
+                return getMessageForInvalidCommandInput(commandArgs, getUsageInfoForAllCommands());
+        }
+    }
+
+    /**
+     * The actual Quick Sort algorithm, this one sorts the ArrayList by name
+     * @param personArray The ArrayList of people to be sorted
+     * @param min The minimum index of the ArrayList we consider to execute Quick Sort on
+     * @param max The maximum index of the ArrayList we consider to execute Quick Sort on
+     */
+    private static void quickSortByName(ArrayList<HashMap<String, String>> personArray, int min, int max) {
+        if (min < 0 || min >= personArray.size()) {
+            throw new IndexOutOfBoundsException("low is not within the range of personArray");
+        }
+        if (max < 0 || max >= personArray.size()) {
+            throw new IndexOutOfBoundsException("high is not within the range of personArray");
+        }
+        int low = min;
+        int high = max;
+        String pivot = getNameFromPerson(personArray.get(low + (high - low) / 2));
+        while (low <= high) {
+            System.out.println (low + " " + high);
+            while (getNameFromPerson(personArray.get(low)).compareTo(pivot) < 0) {
+                low++;
+            }
+            while (getNameFromPerson(personArray.get(high)).compareTo(pivot) > 0) {
+                high--;
+            }
+            if (low <= high) {
+                swapPersonInArray(personArray, low, high);
+                low++;
+                high--;
+            }
+        }
+        //Recursively call quickSortByName to finish sorting the ArrayList
+        if (min < high) {
+            quickSortByName(personArray, min, high);
+        }
+        if (low < max) {
+            quickSortByName(personArray, low, max);
+        }
+    }
+
+    /**
+     * The actual Quick Sort algorithm, this one sorts the ArrayList by phone
+     * @param personArray The ArrayList of people to be sorted
+     * @param min The minimum index of the ArrayList we consider to execute Quick Sort on
+     * @param max The maximum index of the ArrayList we consider to execute Quick Sort on
+     */
+    private static void quickSortByPhone(ArrayList<HashMap<String, String>> personArray, int min, int max) {
+        if (min < 0 || min >= personArray.size()) {
+            throw new IndexOutOfBoundsException("low is not within the range of personArray");
+        }
+        if (max < 0 || max >= personArray.size()) {
+            throw new IndexOutOfBoundsException("high is not within the range of personArray");
+        }
+        int low = min;
+        int high = max;
+        String pivot = getPhoneFromPerson(personArray.get(low + (high - low) / 2));
+        while (low <= high) {
+            while (getPhoneFromPerson(personArray.get(low)).compareTo(pivot) < 0) {
+                low++;
+            }
+            while (getPhoneFromPerson(personArray.get(high)).compareTo(pivot) > 0) {
+                high--;
+            }
+            if (low <= high) {
+                swapPersonInArray(personArray, low, high);
+                low++;
+                high--;
+            }
+        }
+        //Recursively call quickSortByPhone to finish sorting the ArrayList
+        if (min < high) {
+            quickSortByPhone(personArray, min, high);
+        }
+        if (low < max) {
+            quickSortByPhone(personArray, low, max);
+        }
+    }
+
+    /**
+     * The actual Quick Sort algorithm, this one sorts the ArrayList by phone
+     * @param personArray The ArrayList of people to be sorted
+     * @param min The minimum index of the ArrayList we consider to execute Quick Sort on
+     * @param max The maximum index of the ArrayList we consider to execute Quick Sort on
+     */
+    private static void quickSortByEmail(ArrayList<HashMap<String, String>> personArray, int min, int max) {
+        if (min < 0 || min >= personArray.size()) {
+            throw new IndexOutOfBoundsException("low is not within the range of personArray");
+        }
+        if (max < 0 || max >= personArray.size()) {
+            throw new IndexOutOfBoundsException("high is not within the range of personArray");
+        }
+        int low = min;
+        int high = max;
+        String pivot = getEmailFromPerson(personArray.get(low + (high - low) / 2));
+        while (low <= high) {
+            while (getEmailFromPerson(personArray.get(low)).compareTo(pivot) < 0) {
+                low++;
+            }
+            while (getEmailFromPerson(personArray.get(high)).compareTo(pivot) > 0) {
+                high--;
+            }
+            if (low <= high) {
+                swapPersonInArray(personArray, low, high);
+                low++;
+                high--;
+            }
+        }
+        //Recursively call quickSortByEmail to finish sorting the ArrayList
+        if (min < high) {
+            quickSortByEmail(personArray, min, high);
+        }
+        if (low < max) {
+            quickSortByEmail(personArray, low, max);
+        }
+    }
+
+    /**
+     * Swaps the position of 2 people in the ArrayList of people
+     * @param personArray The ArrayList of people we are working on
+     * @param low The index of the first person
+     * @param high The index of the second person
+     */
+    private static void swapPersonInArray(ArrayList<HashMap<String, String>> personArray, int low, int high) {
+        if (low < 0 || low >= personArray.size()) {
+            throw new IndexOutOfBoundsException("low is not within the range of personArray");
+        }
+        if (high < 0 || high >= personArray.size()) {
+            throw new IndexOutOfBoundsException("high is not within the range of personArray");
+        }
+        HashMap<String, String> temp = personArray.get(low);
+        personArray.set(low, personArray.get(high));
+        personArray.set(high, temp);
     }
 
     /**
@@ -1098,6 +1263,7 @@ public class AddressBook {
                 + getUsageInfoForViewCommand() + LS
                 + getUsageInfoForDeleteCommand() + LS
                 + getUsageInfoForClearCommand() + LS
+                + getUsageInfoForSortCommand() + LS
                 + getUsageInfoForExitCommand() + LS
                 + getUsageInfoForHelpCommand();
     }
@@ -1139,6 +1305,12 @@ public class AddressBook {
     private static String getUsageInfoForHelpCommand() {
         return String.format(MESSAGE_COMMAND_HELP, COMMAND_HELP_WORD, COMMAND_HELP_DESC)
                 + String.format(MESSAGE_COMMAND_HELP_EXAMPLE, COMMAND_HELP_EXAMPLE);
+    }
+
+    /** Returns string for showing 'sort' command usage instruction */
+    private static String getUsageInfoForSortCommand() {
+        return String.format(MESSAGE_COMMAND_HELP, COMMAND_SORT_WORD, COMMAND_SORT_DESC) + LS
+                + String.format(MESSAGE_COMMAND_HELP_EXAMPLE, COMMAND_SORT_EXAMPLE) + LS;
     }
 
     /** Returns the string for showing 'exit' command usage instruction */
