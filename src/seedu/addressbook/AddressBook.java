@@ -80,11 +80,12 @@ public class AddressBook {
     private static final String MESSAGE_ERROR_READING_FROM_FILE = "Unexpected error: unable to read from file: %1$s";
     private static final String MESSAGE_ERROR_WRITING_TO_FILE = "Unexpected error: unable to write to file: %1$s";
     private static final String MESSAGE_PERSONS_FOUND_OVERVIEW = "%1$d persons found!";
+    private static final String MESSAGE_PERSONS_FOUND_OVERVIEW_ZERO = "%1$d persons found! %2$s";
     private static final String ZERO_PERSONS_FOUND_SUGGESTION = "Did you type the wrong name?";
     private static final String MESSAGE_STORAGE_FILE_CREATED = "Created new empty storage file: %1$s";
     private static final String MESSAGE_WELCOME = "Welcome to your Address Book!";
     private static final String MESSAGE_USING_DEFAULT_FILE = "Using default storage file : " + DEFAULT_STORAGE_FILEPATH;
-    private static final String MESSAGE_ADDRESSBOOK_SORTED = "Address book has been sorted by ";
+    private static final String MESSAGE_ADDRESSBOOK_SORTED = "Address book has been sorted by %1$s";
 
     // These are the prefix strings to define the data type of a command parameter
     private static final String PERSON_DATA_PREFIX_PHONE = "p/";
@@ -188,6 +189,11 @@ public class AddressBook {
      * List of all persons in the address book.
      */
     private static final ArrayList<HashMap<String, String>> ALL_PERSONS = new ArrayList<HashMap<String, String>>();
+
+    /**
+     * The first index of the address book. Is 0 if empty
+     */
+    private static final int SMALLEST_INDEX_OF_ADDRESSBOOK = 0;
 
     /**
      * Stores the most recent list of persons shown to the user as a result of a user command.
@@ -484,7 +490,7 @@ public class AddressBook {
      * @return summary message for persons displayed with a suggestion message
      */
     private static String getMessageForZeroPersonsDisplayedSummary(ArrayList<HashMap<String, String>> personsDisplayed) {
-        return String.format(MESSAGE_PERSONS_FOUND_OVERVIEW, personsDisplayed.size(), ZERO_PERSONS_FOUND_SUGGESTION);
+        return String.format(MESSAGE_PERSONS_FOUND_OVERVIEW_ZERO, personsDisplayed.size(), ZERO_PERSONS_FOUND_SUGGESTION);
     }
 
     /**
@@ -609,14 +615,14 @@ public class AddressBook {
     private static String executeSortPerson(String commandArgs){
         switch (commandArgs) {
         case COMMAND_SORT_PARAMETER_NAME:
-            quickSortByName(ALL_PERSONS, 0, ALL_PERSONS.size() - 1);
-            return String.format(MESSAGE_ADDRESSBOOK_SORTED, commandArgs);
+            quickSortByName(ALL_PERSONS, SMALLEST_INDEX_OF_ADDRESSBOOK, getLastIndexOfAddressBook());
+            return String.format(MESSAGE_ADDRESSBOOK_SORTED, COMMAND_SORT_PARAMETER_NAME);
         case COMMAND_SORT_PARAMETER_PHONE:
-            quickSortByPhone(ALL_PERSONS, 0, ALL_PERSONS.size() - 1);
-            return String.format(MESSAGE_ADDRESSBOOK_SORTED, commandArgs);
+            quickSortByPhone(ALL_PERSONS, SMALLEST_INDEX_OF_ADDRESSBOOK, getLastIndexOfAddressBook());
+            return String.format(MESSAGE_ADDRESSBOOK_SORTED, COMMAND_SORT_PARAMETER_PHONE);
         case COMMAND_SORT_PARAMETER_EMAIL:
-            quickSortByEmail(ALL_PERSONS, 0, ALL_PERSONS.size() - 1);
-            return String.format(MESSAGE_ADDRESSBOOK_SORTED, commandArgs);
+            quickSortByEmail(ALL_PERSONS, SMALLEST_INDEX_OF_ADDRESSBOOK, getLastIndexOfAddressBook());
+            return String.format(MESSAGE_ADDRESSBOOK_SORTED, COMMAND_SORT_PARAMETER_EMAIL);
         default:
             return getMessageForInvalidCommandInput(commandArgs, getUsageInfoForAllCommands());
         }
@@ -630,6 +636,9 @@ public class AddressBook {
      */
     private static void quickSortByName(ArrayList<HashMap<String, String>> personArray, int min, int max)
         throws IndexOutOfBoundsException {
+        if (personArray.size() == 0) {
+            return;
+        }
         if (min < 0 || min >= personArray.size()) {
             throw new IndexOutOfBoundsException("low is not within the range of personArray");
         }
@@ -640,7 +649,6 @@ public class AddressBook {
         int high = max;
         String pivot = getNameFromPerson(personArray.get(low + (high - low) / 2));
         while (low <= high) {
-            System.out.println (low + " " + high);
             while (getNameFromPerson(personArray.get(low)).compareTo(pivot) < 0) {
                 low++;
             }
@@ -670,6 +678,9 @@ public class AddressBook {
      */
     private static void quickSortByPhone(ArrayList<HashMap<String, String>> personArray, int min, int max)
         throws IndexOutOfBoundsException {
+        if (personArray.size() == 0) {
+            return;
+        }
         if (min < 0 || min >= personArray.size()) {
             throw new IndexOutOfBoundsException("low is not within the range of personArray");
         }
@@ -709,6 +720,9 @@ public class AddressBook {
      */
     private static void quickSortByEmail(ArrayList<HashMap<String, String>> personArray, int min, int max)
         throws IndexOutOfBoundsException {
+        if (personArray.size() == 0) {
+            return;
+        }
         if (min < 0 || min >= personArray.size()) {
             throw new IndexOutOfBoundsException("low is not within the range of personArray");
         }
@@ -748,6 +762,9 @@ public class AddressBook {
      */
     private static void swapPersonInArray(ArrayList<HashMap<String, String>> personArray, int low, int high)
         throws IndexOutOfBoundsException {
+        if (personArray.size() == 0) {
+            return;
+        }
         if (low < 0 || low >= personArray.size()) {
             throw new IndexOutOfBoundsException("low is not within the range of personArray");
         }
@@ -1006,6 +1023,12 @@ public class AddressBook {
         ALL_PERSONS.addAll(persons);
     }
 
+    /**
+     * Gets the last index of the address book ArrayList
+     */
+    private static int getLastIndexOfAddressBook() {
+        return ALL_PERSONS.size() - 1;
+    }
 
     /*
      * ===========================================
