@@ -628,7 +628,8 @@ public class AddressBook {
      * @param min The minimum index of the ArrayList we consider to execute Quick Sort on
      * @param max The maximum index of the ArrayList we consider to execute Quick Sort on
      */
-    private static void quickSortByName(ArrayList<HashMap<String, String>> personArray, int min, int max) {
+    private static void quickSortByName(ArrayList<HashMap<String, String>> personArray, int min, int max)
+        throws IndexOutOfBoundsException {
         if (min < 0 || min >= personArray.size()) {
             throw new IndexOutOfBoundsException("low is not within the range of personArray");
         }
@@ -667,7 +668,8 @@ public class AddressBook {
      * @param min The minimum index of the ArrayList we consider to execute Quick Sort on
      * @param max The maximum index of the ArrayList we consider to execute Quick Sort on
      */
-    private static void quickSortByPhone(ArrayList<HashMap<String, String>> personArray, int min, int max) {
+    private static void quickSortByPhone(ArrayList<HashMap<String, String>> personArray, int min, int max)
+        throws IndexOutOfBoundsException {
         if (min < 0 || min >= personArray.size()) {
             throw new IndexOutOfBoundsException("low is not within the range of personArray");
         }
@@ -705,7 +707,8 @@ public class AddressBook {
      * @param min The minimum index of the ArrayList we consider to execute Quick Sort on
      * @param max The maximum index of the ArrayList we consider to execute Quick Sort on
      */
-    private static void quickSortByEmail(ArrayList<HashMap<String, String>> personArray, int min, int max) {
+    private static void quickSortByEmail(ArrayList<HashMap<String, String>> personArray, int min, int max)
+        throws IndexOutOfBoundsException {
         if (min < 0 || min >= personArray.size()) {
             throw new IndexOutOfBoundsException("low is not within the range of personArray");
         }
@@ -743,7 +746,8 @@ public class AddressBook {
      * @param low The index of the first person
      * @param high The index of the second person
      */
-    private static void swapPersonInArray(ArrayList<HashMap<String, String>> personArray, int low, int high) {
+    private static void swapPersonInArray(ArrayList<HashMap<String, String>> personArray, int low, int high)
+        throws IndexOutOfBoundsException {
         if (low < 0 || low >= personArray.size()) {
             throw new IndexOutOfBoundsException("low is not within the range of personArray");
         }
