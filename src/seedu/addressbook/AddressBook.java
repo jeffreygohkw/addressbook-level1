@@ -375,24 +375,24 @@ public class AddressBook {
         final String commandType = commandTypeAndParams[0];
         final String commandArgs = commandTypeAndParams[1];
         switch (commandType) {
-            case COMMAND_ADD_WORD:
-                return executeAddPerson(commandArgs);
-            case COMMAND_FIND_WORD:
-                return executeFindPersons(commandArgs);
-            case COMMAND_LIST_WORD:
-                return executeListAllPersonsInAddressBook();
-            case COMMAND_DELETE_WORD:
-                return executeDeletePerson(commandArgs);
-            case COMMAND_CLEAR_WORD:
-                return executeClearAddressBook();
-            case COMMAND_HELP_WORD:
-                return getUsageInfoForAllCommands();
-            case COMMAND_SORT_WORD:
-                return executeSortPerson(commandArgs);
-            case COMMAND_EXIT_WORD:
-                executeExitProgramRequest();
-            default:
-                return getMessageForInvalidCommandInput(commandType, getUsageInfoForAllCommands());
+        case COMMAND_ADD_WORD:
+            return executeAddPerson(commandArgs);
+        case COMMAND_FIND_WORD:
+            return executeFindPersons(commandArgs);
+        case COMMAND_LIST_WORD:
+            return executeListAllPersonsInAddressBook();
+        case COMMAND_DELETE_WORD:
+            return executeDeletePerson(commandArgs);
+        case COMMAND_CLEAR_WORD:
+            return executeClearAddressBook();
+        case COMMAND_HELP_WORD:
+            return getUsageInfoForAllCommands();
+        case COMMAND_SORT_WORD:
+            return executeSortPerson(commandArgs);
+        case COMMAND_EXIT_WORD:
+            executeExitProgramRequest();
+        default:
+            return getMessageForInvalidCommandInput(commandType, getUsageInfoForAllCommands());
         }
     }
 
@@ -608,17 +608,17 @@ public class AddressBook {
      */
     private static String executeSortPerson(String commandArgs){
         switch (commandArgs) {
-            case COMMAND_SORT_PARAMETER_NAME:
-                quickSortByName(ALL_PERSONS, 0, ALL_PERSONS.size() - 1);
-                return String.format(MESSAGE_ADDRESSBOOK_SORTED, commandArgs);
-            case COMMAND_SORT_PARAMETER_PHONE:
-                quickSortByPhone(ALL_PERSONS, 0, ALL_PERSONS.size() - 1);
-                return String.format(MESSAGE_ADDRESSBOOK_SORTED, commandArgs);
-            case COMMAND_SORT_PARAMETER_EMAIL:
-                quickSortByEmail(ALL_PERSONS, 0, ALL_PERSONS.size() - 1);
-                return String.format(MESSAGE_ADDRESSBOOK_SORTED, commandArgs);
-            default:
-                return getMessageForInvalidCommandInput(commandArgs, getUsageInfoForAllCommands());
+        case COMMAND_SORT_PARAMETER_NAME:
+            quickSortByName(ALL_PERSONS, 0, ALL_PERSONS.size() - 1);
+            return String.format(MESSAGE_ADDRESSBOOK_SORTED, commandArgs);
+        case COMMAND_SORT_PARAMETER_PHONE:
+            quickSortByPhone(ALL_PERSONS, 0, ALL_PERSONS.size() - 1);
+            return String.format(MESSAGE_ADDRESSBOOK_SORTED, commandArgs);
+        case COMMAND_SORT_PARAMETER_EMAIL:
+            quickSortByEmail(ALL_PERSONS, 0, ALL_PERSONS.size() - 1);
+            return String.format(MESSAGE_ADDRESSBOOK_SORTED, commandArgs);
+        default:
+            return getMessageForInvalidCommandInput(commandArgs, getUsageInfoForAllCommands());
         }
     }
 
