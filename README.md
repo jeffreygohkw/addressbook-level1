@@ -113,6 +113,16 @@ Examples:
 > Clears all entries from the address book.  
 Format: `clear`  
 
+#### Sorting data: `sort`
+
+Format: `sort PARAMETER`  
+> Sorts the address book based on the specified PARAMETER  
+  The PARAMETER refers to either name, phone or email.
+
+Examples:
+* `sort name`<br>
+  > Sorts the people in the address book by alphaetical order.
+
 #### Exiting the program: `exit`
 Format: `exit`  
 
