@@ -598,7 +598,8 @@ public class AddressBook {
     }
 
     /**
-     * Checks if commandArgs is valid, then calls quickSort to sort the ArrayList of people
+     * Checks if input string is valid,
+     * If it is, call a method to sort the ArrayList of people based on the parameter of the input string
      *
      * @param commandArgs The parameter we want to sort the people in the ArrayList with
      * @return An error message if commandArgs is invalid, and a success message from quickSort if it is
@@ -620,7 +621,8 @@ public class AddressBook {
     }
 
     /**
-     * The actual Quick Sort algorithm, this one sorts the ArrayList by name
+     * Quick Sort algorithm that sorts the ArrayList by name
+     *
      * @param personArray The ArrayList of people to be sorted
      * @param min The minimum index of the ArrayList we consider to execute Quick Sort on
      * @param max The maximum index of the ArrayList we consider to execute Quick Sort on
@@ -662,7 +664,8 @@ public class AddressBook {
     }
 
     /**
-     * The actual Quick Sort algorithm, this one sorts the ArrayList by phone
+     * Quick Sort algorithm that sorts the ArrayList by phone
+     *
      * @param personArray The ArrayList of people to be sorted
      * @param min The minimum index of the ArrayList we consider to execute Quick Sort on
      * @param max The maximum index of the ArrayList we consider to execute Quick Sort on
@@ -704,7 +707,8 @@ public class AddressBook {
     }
 
     /**
-     * The actual Quick Sort algorithm, this one sorts the ArrayList by phone
+     * Quick Sort algorithm that sorts the ArrayList by email
+     *
      * @param personArray The ArrayList of people to be sorted
      * @param min The minimum index of the ArrayList we consider to execute Quick Sort on
      * @param max The maximum index of the ArrayList we consider to execute Quick Sort on
@@ -747,6 +751,7 @@ public class AddressBook {
 
     /**
      * Swaps the position of 2 people in the ArrayList of people
+     * 
      * @param personArray The ArrayList of people we are working on
      * @param low The index of the first person
      * @param high The index of the second person
