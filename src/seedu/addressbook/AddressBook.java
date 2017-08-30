@@ -751,7 +751,7 @@ public class AddressBook {
 
     /**
      * Swaps the position of 2 people in the ArrayList of people
-     * 
+     *
      * @param personArray The ArrayList of people we are working on
      * @param low The index of the first person
      * @param high The index of the second person

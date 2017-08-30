@@ -91,6 +91,22 @@
   delete 1
   list
 
+  # Add a new person 
+  add Alex Ander p/345678 e/lexande@nus.edu.sg
+  list
+
+  # sorts by name
+  sort name
+  list
+
+  # sorts by phone
+  sort phone
+  list
+
+  # sorts by email
+  sort email
+  list
+
 ##########################################################
 # test clear command
 ##########################################################
